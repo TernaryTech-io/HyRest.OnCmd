@@ -1,28 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace HyRest.OnCmd.UserInterface;
 
-namespace HyRest.OnCmd;
-
-public class LoginScreen
+public class LoginScreen : Screen
 {
-    internal static Layout LoginLayout => new Layout("login")
+    public static MenuResult Go() => new LoginScreen().RunScreen();
+    public LoginScreen() : base (null)
+    {
+
+    }
+    public override MenuResult<string[]> RunScreen()
+    {
+        UI.Write(LoginPanel);
+        var choice = UI.Prompt(
+            UI.NewEnumPrompt<LoginOptions>("Welcome! Select an Option:"));
+        return RouteChoice(choice);
+    }
+
+    protected override MenuResult<string[]> RouteChoice<TOption>(TOption choice) 
+        => choice switch
+    {
+        LoginOptions.Login => MenuResult<string[]>.Create(Login()),
+        LoginOptions.Exit => MenuResult<string[]>.Create(Exit())
+    };
+    internal Layout LoginLayout => new Layout("login")
         .SplitColumns(
             new Layout("left").Size(4),
             new Layout("center").Size(12),
             new Layout("right").Size(4)
         );
-    internal static Panel LoginPanel
+    internal Panel LoginPanel
         => new Panel(LoginGrid)
         .Padding(4, 2)
         .BorderColor(UI.PrimaryColor)
         .RoundedBorder()
         .Expand();
-    internal static Grid FigletGrid => new Grid()
+    internal Grid FigletGrid => new Grid()
         .AddColumn(new GridColumn())
         .AddRow(UI.Figlet)
         .AddRow(new Text("A Terminal Client for OnBase Powered by HyRest"));
-    internal static Grid LoginGrid => new Grid()
+    internal Grid LoginGrid => new Grid()
         .AddColumns(
             new GridColumn().Centered().Padding(2, 2),
             new GridColumn().LeftAligned().Padding(4, 2)
@@ -31,29 +46,24 @@ public class LoginScreen
         .AddEmptyRow()
         .Expand();
 
-    public static LoginOption Init()
+    public string[] Login()
     {
-        AnsiConsole.Write(LoginPanel);
-        return AnsiConsole.Prompt(
-            UI.NewPrompt<LoginOption>("Select and Option")
-            .AddChoices(LoginOption.Login, LoginOption.Exit));
+        UI.Write(UI.InStyle("Enter your Username and Password at the prompts", UI.PrimaryColor, true));
+        UI.WriteLine();
+        var username = UI.Prompt(UI.TextPrompt<string>("Username"));
+        var password = UI.Prompt(UI.SecretPrompt<string>("Password"));
+        return [username, password];
     }
-    public static (string, string) Login()
+    public string[] Exit()
     {
-        AnsiConsole.Write(UI.InStyle("Enter your Username and Password at the prompts", UI.PrimaryColor, true));
-        AnsiConsole.WriteLine();
-        var username = AnsiConsole.Prompt(UI.TextPrompt<string>("Username"));
-        var password = AnsiConsole.Prompt(UI.SecretPrompt<string>("Password"));
-        return (username, password);
-    }
-    public static void Exit()
-    {
-        AnsiConsole.Write(Align.Center(UI.InStyle("Goodbye!", UI.PrimaryColor, true)));
+        UI.Write(Align.Center(UI.InStyle("Goodbye!", UI.PrimaryColor, true)));
         Environment.Exit(0);
+        return [string.Empty,string.Empty];
     }
 }
 
-public enum LoginOption
+
+public enum LoginOptions
 {
     Login,
     Exit

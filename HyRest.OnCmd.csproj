@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cocona" />
     <PackageReference Include="DotNetEnv" />
     <PackageReference Include="Spectre.Console" />
     <PackageReference Include="Spectre.Console.ImageSharp" />

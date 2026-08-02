@@ -1,35 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text;
+﻿namespace HyRest.OnCmd.UserInterface;
 
-namespace HyRest.OnCmd;
-
-internal class MainMenu
+public class MainMenu : Screen
 {
-    internal static Task LoadMainMenu()
+    private CliHost _host;
+    public MainMenu(CliHost host, IScreen returnScreen) : base(returnScreen)
     {
-        AnsiConsole.Clear();
-        AnsiConsole.Write(UI.MenuHeader("Main Menu"));
-        var choice = AnsiConsole.Prompt(UI.NewPrompt<MainMenuItem>("Main Menu").AddChoices(
-            MainMenuItem.Document_Retrieval,
-            MainMenuItem.Document_Import,
-            MainMenuItem.Document_Queries,
-            MainMenuItem.Log_Out));
+        _host = host;
+    }
+
+    public static MenuResult Go(CliHost host, IScreen returnScreen) => new MainMenu(host, returnScreen).RunScreen();
+    public override MenuResult RunScreen()
+    {
+        UI.Clear();
+        UI.Write(UI.MenuHeader("Main Menu"));
+        var choice = UI.Prompt(UI.NewEnumPrompt<MainMenuOptions>("Main Menu"));
         return RouteChoice(choice);
     }
 
-    internal static Task RouteChoice(MainMenuItem item) => item switch
+    protected override MenuResult RouteChoice<TOption>(TOption choice) => choice switch
     {
-        _ => Task.Run(() => AnsiConsole.Markup(UI.ToStyle("Cool", UI.SecondaryColor, true)))
+        MainMenuOptions.Document_Retrieval => DocumentRetrieval.Go(_host, this),
+        MainMenuOptions.Document_Import => DocumentImport.Go(_host,this),
+        MainMenuOptions.Back => LogOut()
     };
-
+    private MenuResult LogOut()
+    {
+        Console.Clear();
+        if(_host.App.IsConnected)
+            _host.App.Session.Disconnect();
+        UI.Write(UI.MenuText("Bye!"));
+        return _host.Start();
+    }
 }
-public enum MainMenuItem
+public enum MainMenuOptions
 {
-    Main_Menu,
     Document_Retrieval,
     Document_Import,
-    Document_Queries,
-    Log_Out
+    Back
 }

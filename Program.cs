@@ -1,8 +1,6 @@
-﻿using HyRest.OnCmd;
-using System.Text;
+﻿using HyRest.OnCmd.Configuration;
 
-Console.InputEncoding = Encoding.Unicode;
-Console.OutputEncoding = Encoding.Unicode;
+var app = CliHostBuilder.Create(args).Build();
+app.Start();
 
-await UserInterface.Start();
 
