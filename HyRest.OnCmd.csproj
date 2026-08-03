@@ -19,6 +19,8 @@
 
   <ItemGroup>
     <PackageReference Include="DotNetEnv" />
+    <PackageReference Include="HyRest" />
+    <PackageReference Include="HyRest.DependencyInjection" />
     <PackageReference Include="Spectre.Console" />
     <PackageReference Include="Spectre.Console.ImageSharp" />
     <PackageReference Include="Ternary.Extensions.Logging" />
@@ -36,11 +38,6 @@
     <Content Include=".env">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\HyRest.DependencyInjection\HyRest.DependencyInjection.csproj" />
-    <ProjectReference Include="..\..\src\HyRest\HyRest.csproj" />
   </ItemGroup>
 
   <ItemGroup>
