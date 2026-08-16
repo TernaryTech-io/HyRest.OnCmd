@@ -1,4 +1,4 @@
-﻿using HyRest.DocumentManagement;
+﻿using HyRest.OnBase.Core;
 using System.Diagnostics;
 
 namespace HyRest.OnCmd.UserInterface;
@@ -28,7 +28,7 @@ public class DocumentScreen : Screen
         grid.AddRow("Document Date", _doc.DocumentDate.ToShortDateString(), "");
         grid.AddRow("Document Type", _doc.DocumentType.Name, "");
         grid.AddRow("Status", _doc.Status.ToString(), "");
-        grid.AddRow("Created By", _doc.CreatedBy.Name, "");
+        grid.AddRow("Created By", _doc.CreatedByUserId.ToString(), "");
         UI.Write(UI.NewPanel("🭁 Document", grid));
         var choice = UI.Prompt(Prompt);
         return RouteChoice(choice);
@@ -80,7 +80,7 @@ public class DocumentScreen : Screen
             foreach (var hist in history.Items)
             {
                 var date = DateTime.Parse(hist.LogDate).ToString();
-                grid.AddRow(hist.Action, date, hist.UserId, hist.Message);
+                grid.AddRow(Markup.Escape(hist.Action), Markup.Escape(date), Markup.Escape(hist.UserId), Markup.Escape(hist.Message));
             }
             return UI.NewPanel("◔ History", grid);
         });        
@@ -97,7 +97,8 @@ public class DocumentScreen : Screen
             new GridColumn().Padding(2, 2), 
             new GridColumn().Padding(2, 2), 
             new GridColumn().Padding(2, 2));
-        var notechunks = _doc.Notes.ToList().Chunk(4);      
+        var notesList = _doc.GetNotesForRevision();
+        var notechunks = notesList.Chunk(4);      
         foreach(var notes in notechunks)
         {
             grid.AddRow(

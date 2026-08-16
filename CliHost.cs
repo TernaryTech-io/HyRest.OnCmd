@@ -1,5 +1,7 @@
-﻿using HyRest.OnCmd.Configuration;
+﻿using HyRest.OnBase;
+using HyRest.OnCmd.Configuration;
 using HyRest.OnCmd.UserInterface;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Text;
 
@@ -8,19 +10,18 @@ namespace HyRest.OnCmd;
 public class CliHost
 {
     private readonly HylandClientOptions _options;
-    private readonly ILoggerFactory _logFactory;
     private readonly ILogger<CliHost> _logger;
     private OnBaseApp _app;
-    public CliHost(ILoggerFactory logFactory, HylandClientOptions options)
-    {
-        _logFactory = logFactory;
+    private OnBaseAppBuilder _builder;
+    public CliHost(HylandClientOptions options)
+    {     
         _options = options;
-        _logger = _logFactory.CreateLogger<CliHost>();
 
         //Makes it prettier
         Console.InputEncoding = Encoding.Unicode;
         Console.OutputEncoding = Encoding.Unicode;        
         Console.CancelKeyPress += ConsoleCancelHandeler;
+        _builder = OnBaseAppBuilder.Create(options);
     }
     public OnBaseApp App => _app;
     public ILogger<CliHost> Logger => _logger;
@@ -32,10 +33,12 @@ public class CliHost
             var resp = LoginScreen.Go();
             if (resp.Result != null && resp.Result is string[] result)
             {
-                var creds = CliHostBuilder.GetCredentials(result[0], result[1]);
+                var creds = CliHostBuilder.GetCredentials(result[0], result[1]);                               
                 _app = UI.Execute("Logging in...", () =>
                 {
-                    return OnBaseApp.Create(_logFactory.CreateLogger<OnBaseApp>(), creds, _options);
+                    return _builder
+                    .WithCredentials(creds)
+                    .Build();
                 });
                 return MainMenu.Go(this, new LoginScreen());
             }

@@ -1,4 +1,4 @@
-﻿using HyRest.DocumentManagement;
+﻿using HyRest.OnBase.Core;
 
 namespace HyRest.OnCmd.UserInterface;
 
@@ -30,7 +30,7 @@ public class DocumentImport : Screen
         DocumentImportOptions.Add_Keywords => AddKeywordTypes(),
         DocumentImportOptions.Add_File => AddFiles(),
         DocumentImportOptions.Import => Import(),
-        DocumentImportOptions.Clear => UI.Execute("Clearing current changes", () => DocumentImport.Go(_host, ReturnScreen)),
+        DocumentImportOptions.Clear => DocumentImport.Go(_host, ReturnScreen),
         DocumentImportOptions.Back => Return()
     };
 
@@ -46,7 +46,7 @@ public class DocumentImport : Screen
             UI.WriteLine("There are no files to import.", UI.WarnColor);
             return RouteChoice(UI.Prompt(Prompt));
         }
-        var task = DocProps.ArchiveDocument();
+        var task = DocProps.ArchiveDocumentAsync();
         task.Wait();
         if(task.IsCompletedSuccessfully)
         {
@@ -73,7 +73,7 @@ public class DocumentImport : Screen
         var choice = UI.Prompt(UI.NewEnumPrompt<FileOptions>("Add a File or Search a directory:"));
         if(choice == FileOptions.File_Path)
         {
-            var path = UI.Prompt(PathPrompt("Provide the full path to the file."));
+            var path = UI.Prompt(PathPrompt("Provide the full path to the file.")).Replace("\"","");
             if(!File.Exists(path))
             {
                 if (UI.Confirm("The file does not exist at the path provided. Try again?"))
@@ -90,8 +90,8 @@ public class DocumentImport : Screen
         }
         else
         {
-            var path = UI.Prompt(PathPrompt("Provide the full path to the directory"));
-            if(!Directory.Exists(path))
+            var path = UI.Prompt(PathPrompt("Provide the full path to the directory")).Replace("\"", "");
+            if (!Directory.Exists(path))
             {
                 if (UI.Confirm("The directory does not exist at the path provided. Try again?"))
                     goto tryagain;

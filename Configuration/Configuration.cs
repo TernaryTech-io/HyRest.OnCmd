@@ -1,5 +1,4 @@
 ﻿using DotNetEnv;
-using HyRest.Identity.Credentials;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -19,8 +18,7 @@ public class CliHostBuilder
         Env.Load();
         var logFactory = LoggerFactory.Create(config =>
         {
-            config//.AddColorConsole()
-            .SetMinimumLevel(LogLevel.Information);
+            config.SetMinimumLevel(LogLevel.Information);
         });
         _builder.Services.AddSingleton(logFactory);
         _builder.Services.AddSingleton(Options);
@@ -33,7 +31,8 @@ public class CliHostBuilder
     {
         ApiBaseUrl = Environment.GetEnvironmentVariable("HYREST_APIURL"),
         IdsBaseUrl = Environment.GetEnvironmentVariable("HYREST_IDSURL"),  
-        UseQueryMetering = bool.Parse(Environment.GetEnvironmentVariable("HYREST_USE_QUERY_LIC"))
+        UseQueryMetering = bool.Parse(Environment.GetEnvironmentVariable("HYREST_USE_QUERY_LIC")),
+        RequestTimeOut = 180
     };
     internal static IAuthenticationCredentials GetCredentials(string username, string password)
     {

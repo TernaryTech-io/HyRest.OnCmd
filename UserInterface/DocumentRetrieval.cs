@@ -1,5 +1,5 @@
 ﻿using HyRest.API.Models;
-using HyRest.DocumentManagement;
+using HyRest.OnBase.Core;
 
 namespace HyRest.OnCmd.UserInterface;
 
@@ -163,7 +163,7 @@ public class DocumentRetrieval : Screen
             if (type == QueryType.CustomQuery)
             {                
                 var cq = _host.App.Core.CustomQueries[item];
-                cq?.KeywordTypes.ForEach(k => prompt.AddChoice(k.Name));
+                cq?.KeywordTypes.ToList().ForEach(k => prompt.AddChoice(k.Name));
             }
             if (type == QueryType.DocumentType)
             {

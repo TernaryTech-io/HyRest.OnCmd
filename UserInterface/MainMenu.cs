@@ -13,7 +13,7 @@ public class MainMenu : Screen
     {
         UI.Clear();
         UI.Write(UI.MenuHeader("Main Menu"));
-        var choice = UI.Prompt(UI.NewEnumPrompt<MainMenuOptions>("Main Menu"));
+        var choice = UI.Prompt(UI.NewEnumPrompt<MainMenuOptions>($"Welcome {_host.App.CurrentUser.RealName}!"));
         return RouteChoice(choice);
     }
 
