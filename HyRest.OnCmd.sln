@@ -5,6 +5,10 @@ VisualStudioVersion = 18.8.12023.21
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyRest.OnCmd", "HyRest.OnCmd.csproj", "{002E8275-F4A1-4BE7-9C25-4B863BC2DD80}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyRest", "..\..\src\HyRest\HyRest.csproj", "{8C5249C0-7210-82E2-C18B-3C906EF34658}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyRest.Abstractions", "..\..\src\HyRest.Abstractions\HyRest.Abstractions.csproj", "{4292437D-0AE9-29EC-CE65-FE47FA8E9438}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{002E8275-F4A1-4BE7-9C25-4B863BC2DD80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{002E8275-F4A1-4BE7-9C25-4B863BC2DD80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{002E8275-F4A1-4BE7-9C25-4B863BC2DD80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C5249C0-7210-82E2-C18B-3C906EF34658}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C5249C0-7210-82E2-C18B-3C906EF34658}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C5249C0-7210-82E2-C18B-3C906EF34658}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C5249C0-7210-82E2-C18B-3C906EF34658}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4292437D-0AE9-29EC-CE65-FE47FA8E9438}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4292437D-0AE9-29EC-CE65-FE47FA8E9438}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4292437D-0AE9-29EC-CE65-FE47FA8E9438}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4292437D-0AE9-29EC-CE65-FE47FA8E9438}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

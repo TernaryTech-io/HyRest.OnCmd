@@ -34,7 +34,7 @@ public class DocumentRetrieval : Screen
         var table = new Table()
             .AddColumns("Keyword", "Value", "Operator", "Relation")
             .RoundedBorder()
-            .BorderColor(Color.DarkSlateGray1)
+            .BorderColor(Color.DarkSlateGray3)
             .Expand();  
         var prompt = GetItems(type);
         var choice = UI.Prompt(prompt);
@@ -126,7 +126,8 @@ public class DocumentRetrieval : Screen
             var results = query.GetResults();            
             if (results.Count == 0)
             {
-                throw new Exception("No Documents found.");
+                UI.ShowSadPanel("No Documents found.");
+                Return();
             }            
             return UI.NewPrompt<DocumentQueryItem>("Select a document").AddChoices(GetResultItemList(type, results));
         }) ?? throw new Exception("Something went wrong... :(");
