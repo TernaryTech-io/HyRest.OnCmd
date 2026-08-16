@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <ApplicationIcon>Ternary-teal.ico</ApplicationIcon>
     <PackageIcon>Ternary-teal.png</PackageIcon>
-    <VersionPrefix>10.0.10</VersionPrefix>
+    <VersionPrefix>10.0.11</VersionPrefix>
   </PropertyGroup>
   <ItemGroup>
     <None Remove=".env" />
@@ -15,10 +15,10 @@
     <Content Include="Ternary-teal.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DotNetEnv" />
-    <PackageReference Include="Spectre.Console" />
-    <PackageReference Include="Spectre.Console.ImageSharp" />
-    <!--<PackageReference Include="HyRest" />-->
+    <PackageReference Include="DotNetEnv" Version="3.2.0" />
+    <PackageReference Include="Spectre.Console" Version="0.57.2" />
+    <PackageReference Include="Spectre.Console.ImageSharp" Version="0.57.2" />
+    <PackageReference Include="HyRest" Version="10.0.11" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Ternary-teal.png">
@@ -31,9 +31,6 @@
     <Content Include=".env">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\HyRest\HyRest.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Using Include="Spectre.Console" />
