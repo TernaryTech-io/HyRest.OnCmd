@@ -21,7 +21,7 @@
     <PackageReference Include="HyRest" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\resources\Ternary-teal.png">
+    <None Include="Ternary-teal.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
